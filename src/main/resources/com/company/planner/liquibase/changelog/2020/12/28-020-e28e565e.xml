@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet author="plnnr" id="1">
+        <addColumn tableName="PLNNR_TALK">
+            <column name="enddate" type="DATETIME"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="plnnr" id="2">
+        <dropColumn columnName="END_DATE" tableName="PLNNR_TALK"/>
+    </changeSet>
+</databaseChangeLog>
