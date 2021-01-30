@@ -1,9 +1,21 @@
+
+buildscript {    // Configuration for building
+    repositories {
+        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.1'
+    }
+}
+
 plugins {
-    id 'io.jmix' version '0.2.0'
+    id 'io.jmix' version '0.2.3'
     id 'java'
 }
 
 apply plugin: 'org.springframework.boot'
+apply plugin: 'com.google.cloud.tools.appengine'
 
 jmix {
     bomVersion = '0.3.0-SNAPSHOT'
@@ -12,13 +24,12 @@ jmix {
 
 group = 'com.company'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
 repositories {
-    jcenter() 
+    jcenter()
     maven {
         url 'https://nexus.jmix.io/repository/public'
-    } 
+    }
 }
 
 dependencies {
@@ -35,7 +46,13 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    runtimeOnly 'org.hsqldb:hsqldb'
+    implementation('com.google.cloud.sql:postgres-socket-factory:1.2.0') {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+
+    //runtimeOnly 'org.hsqldb:hsqldb'
+    compile 'org.postgresql:postgresql:42.1.4'
+
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -44,4 +61,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+appengine {  // App Engine tasks configuration
+    deploy {   // deploy configuration
+        projectId = 'jmix-app'
+        version = '1'
+    }
 }
